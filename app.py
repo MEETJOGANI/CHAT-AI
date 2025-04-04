@@ -2,6 +2,7 @@ import os
 import sys
 import subprocess
 import importlib.util
+import streamlit as st
 
 # Function to check and install packages if they don't exist
 def install_package(package):
@@ -35,6 +36,14 @@ import datetime
 import time
 import json
 from serpapi import GoogleSearch  # For real web search capabilities
+
+# Streamlit page configuration (must be the first Streamlit command)
+st.set_page_config(
+    page_title="WebMind - Better than ChatGPT",
+    page_icon="🤖",
+    layout="wide",
+    initial_sidebar_state="expanded"
+)
 
 # Load environment variables from .env file
 load_dotenv()
@@ -143,14 +152,6 @@ def perform_web_search(query, num_results=5):
             "query": query,
             "organic_results": []
         }
-
-# Streamlit page configuration
-st.set_page_config(
-    page_title="WebMind - Better than ChatGPT",
-    page_icon="🤖",
-    layout="wide",
-    initial_sidebar_state="expanded"
-)
 
 # Initialize session state variables if they don't exist
 if "messages" not in st.session_state:
@@ -499,6 +500,8 @@ LIMIT 10;"""
                 {"output": "- ls: List files in current directory"},
                 {"output": "- echo <text>: Display text"},
                 {"output": "- clear: Clear the terminal"},
+                {"output": "- date: Show current date and time"},
+                {"output": "- whoami: Show current user"},
                 {"output": ""}
             ]
 
@@ -718,3 +721,33 @@ LIMIT 10;"""
                 if submit_theme:
                     st.success("Theme settings updated! Note: Some settings may require a refresh to take full effect.")
                     # Here we would actually apply these settings in a real implementation
+
+import streamlit as st
+
+# Example of using st.rerun()
+if some_condition:
+    # Reset session state variables if needed
+    st.session_state.some_variable = new_value
+    st.rerun()  # Updated method
+
+# Example of manual state reset
+if some_other_condition:
+    # Reset session state variables
+    st.session_state.some_variable = new_value
+    st.stop()  # Stop the script execution
+
+
+
+# Example form submission
+with st.form("my_form"):
+    user_input = st.text_input("Enter some text")
+    submitted = st.form_submit_button("Submit")
+
+    if submitted:  # This is the condition
+        # Process the form data
+        st.session_state.processed_input = user_input
+        st.rerun()  # Rerun the app to reflect changes
+
+# Display the processed input
+if 'processed_input' in st.session_state:
+    st.write("You entered:", st.session_state.processed_input)
