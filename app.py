@@ -3,6 +3,8 @@ import sys
 import subprocess
 import importlib.util
 import streamlit as st
+import serpapi
+
 
 # Function to check and install packages if they don't exist
 def install_package(package):
